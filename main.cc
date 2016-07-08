@@ -6,11 +6,19 @@ using namespace std;
 
 int
 main(int argc, char* argv[]) {
+  if (argc != 2) {
+    cerr << "Usage: " << argv[0] << "obfuscated-string" << endl;
+    return 1;
+  }
   char* const obf = argv[1];
   auto pos = 0U;
   if (strncmp(obf, "OBF:", 4) == 0)
     pos = 4;
   const auto len = strlen(obf);
+  if (len - pos != 144) {
+    cerr << "obfuscated-string not 144 chars long!" << endl;
+    return 1;
+  }
   string s;
   while (pos + 4 <= len) {
     const char bufc = obf[pos + 4];
