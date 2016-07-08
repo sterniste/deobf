@@ -1,3 +1,4 @@
+#include <cctype>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -28,6 +29,10 @@ main(int argc, char* argv[]) {
     const auto i1 = (l / 256);
     const auto i2 = (l % 256);
     const char c = static_cast<char>((i1 + i2 - 254) / 2);
+    if (!islower(c) && !isdigit(c) && c != '-') {
+      cerr << "bad char in obfuscated-string, positions " << pos << '-' << (pos + 4 - 1) << endl;
+      return 1;
+    }
     s.push_back(c);
     pos += 4;
   }
