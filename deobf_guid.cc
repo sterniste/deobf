@@ -43,6 +43,3 @@ main(int argc, char* argv[]) {
     cout << deobf_guid << endl;
   }
 }
-
-      
-  
