@@ -1,0 +1,22 @@
+#!/bin/bash
+# use -DBUILD_IWYU=ON to prepend include-what-you-use phase to build
+if [ "$(expr substr $(uname -s) 1 6)" == "CYGWIN" ]; then
+    # adjust the following line (absolute path to the directory containing this file)
+   DEOBF_GUID_ROOT=$HOME/Desktop/dev/nb/src/deobf-guid
+   alias cmake_debug="cmake -DDEOBF_GUID_ROOT=$DEOBF_GUID_ROOT -DCMAKE_TOOLCHAIN_FILE=$DEOBF_GUID_ROOT/w64-mingw/toolchain-w64-mingw.cmake -DCMAKE_BUILD_TYPE=debug"
+   alias cmake_rel_deb="cmake -DDEOBF_GUID_ROOT=$DEOBF_GUID_ROOT -DCMAKE_TOOLCHAIN_FILE=$DEOBF_GUID_ROOT/w64-mingw/toolchain-w64-mingw.cmake -DCMAKE_BUILD_TYPE=relwithdebinfo"
+   alias cmake_release="cmake -DDEOBF_GUID_ROOT=$DEOBF_GUID_ROOT -DCMAKE_TOOLCHAIN_FILE=$DEOBF_GUID_ROOT/w64-mingw/toolchain-w64-mingw.cmake -DCMAKE_BUILD_TYPE=release"
+else
+  alias cmake_debug="cmake -DCMAKE_BUILD_TYPE=debug"
+  alias cmake_rel_deb="cmake -DCMAKE_BUILD_TYPE=relwithdebinfo"
+  alias cmake_release="cmake -DCMAKE_BUILD_TYPE=release"
+fi
+# only removes cmake infrastructure, leaves build artifacts
+function cmake_wipe(){
+  if [ $# -eq 0 ]; then
+     dir=.
+  else
+     dir=$1
+  fi
+  rm -rf `find $dir \( -name 'CMakeFiles' -o -name 'CMakeCache.txt' -o -name 'cmake_install.cmake' -o -name 'CTestTestfile.cmake' -o -name Testing \)`
+}
