@@ -18,7 +18,7 @@ main(int argc, char* argv[]) {
       pos = 4;
     const auto len = strlen(obf_guid);
     if (len - pos != 144) {
-      cerr << "obfuscated-guid " << i << ": not 144 chars long!" << endl;
+      cerr << "obfuscated-guid " << i << ": not 144 chars long" << endl;
       return 1;
     }
     string deobf_guid;
@@ -30,11 +30,11 @@ main(int argc, char* argv[]) {
       const char deobf_guid_c = static_cast<char>(((l / 256) + (l % 256) - 254) / 2);
       if (deobf_guid.length() == 8 || deobf_guid.length() == 13 || deobf_guid.length() == 18 || deobf_guid.length() == 23) {
         if (deobf_guid_c != '-') {
-          cerr << "obfuscated-guid " << i << ": non '-' decrypted within position range " << pos << '-' << (pos + 4 - 1) << endl;
+          cerr << "obfuscated-guid " << i << ": invalid guid: non '-' at output pos " << deobf_guid.length() << endl;
           return 1;
         }
       } else if (!isxdigit(deobf_guid_c)) {
-        cerr << "obfuscated-guid " << i << ": non hex digit decrypted within position range " << pos << '-' << (pos + 4 - 1) << endl;
+        cerr << "obfuscated-guid " << i << ": invalid guid: non hex digit at output pos " << deobf_guid.length() << endl;
         return 1;
       }
       deobf_guid.push_back(deobf_guid_c);
